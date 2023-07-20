@@ -1,0 +1,39 @@
+#!/etc/profiles/per-user/db/bin/zsh
+set -euo pipefail
+
+setopt EXTENDED_GLOB
+setopt LOCAL_OPTIONS
+setopt LOCAL_TRAPS
+setopt ERR_EXIT
+
+export LANG="${LANG:-en_GB.UTF-8}"
+
+typeset -a changed_dhall=()
+
+get_changed_dhall() {
+  local CHANGED
+  git status --porcelain \
+    | awk '$0 ~ /^(A|M)/ && $2 ~ /\.dhall$/ {print $2}' \
+    | { read -r -d "" CHANGED || : }
+
+  changed_dhall+=("${(f)CHANGED}")
+
+  # print -l -- "${(@)changed_dhall}" >&2
+}
+
+convert_dhall() {
+  local OUTPUT="${${1?Dhall input}:r}.json"
+  dhall-to-json \
+    < =(git show :"$1") \
+    > "$OUTPUT"
+
+  git add "$OUTPUT"
+}
+
+get_changed_dhall
+
+if (( #changed_dhall )); then
+  for f in "${(@)changed_dhall}"; do
+    convert_dhall "$f"
+  done
+fi
