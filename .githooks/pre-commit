@@ -22,10 +22,36 @@ get_changed_dhall() {
 }
 
 convert_dhall() {
+  local -a custom_tags=(
+    "FindInMap"
+    "Ref"
+  )
+
+  local -a custom_fns=(
+    "And"
+    "Base64"
+    "Cidr"
+    "Equals"
+    "GetAZs"
+    "GetAtt"
+    "If"
+    "ImportValue"
+    "Join"
+    "Not"
+    "Or"
+    "Select"
+    "Split"
+    "Sub"
+    "fn"
+  )
+
   local OUTPUT="${${1?Dhall input}:r}.yml"
   dhall-to-json \
     < =(git show :"$1") \
     | yj -r \
+    | sed -E -e 's/('"${(j:|:)custom_tags}"'):/!\1/' \
+      -e 's/Fn::('"${(j:|:)custom_fns}"'):/!\1/' \
+      -e 's/<<Include:/<<: !Include/' \
     > "$OUTPUT"
 
   git add "$OUTPUT"
