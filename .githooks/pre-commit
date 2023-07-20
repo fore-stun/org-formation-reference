@@ -22,6 +22,9 @@ get_changed_dhall() {
 }
 
 convert_dhall() {
+  zparseopts -D -E -F -- \
+    -test=OPT_test t=OPT_test
+
   local -a custom_tags=(
     "FindInMap"
     "Ref"
@@ -54,7 +57,9 @@ convert_dhall() {
       -e 's/<<Include:/<<: !Include/' \
     > "$OUTPUT"
 
-  git add "$OUTPUT"
+  if ! (( OPT_test )); then
+    git add "$OUTPUT"
+  fi
 }
 
 get_changed_dhall
