@@ -22,9 +22,10 @@ get_changed_dhall() {
 }
 
 convert_dhall() {
-  local OUTPUT="${${1?Dhall input}:r}.json"
+  local OUTPUT="${${1?Dhall input}:r}.yml"
   dhall-to-json \
     < =(git show :"$1") \
+    | yj -r \
     > "$OUTPUT"
 
   git add "$OUTPUT"
