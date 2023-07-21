@@ -41,7 +41,6 @@ Organization:
       OrganizationalUnitName: shared
       Accounts:
         - !Ref OrgBuildAccount
-        - !Ref SecurityAccount
         - !Ref LogArchiveAccount
 
   # Organizational Unit that contains accounts to be deleted from organization
@@ -50,16 +49,6 @@ Organization:
     Properties:
       OrganizationalUnitName: suspended
       Accounts: []
-
-  SecurityAccount:
-    Type: OC::ORG::Account
-    Properties:
-      Alias: "{{organization-name}}-security"
-      AccountName: Security Account
-      RootEmail: aws+security@{{email-domain}}
-      Tags:
-        budget-alarm-threshold: 200
-        budget-alarm-threshold-email-recipient: security@{{email-domain}}
 
   LogArchiveAccount:
     Type: OC::ORG::Account
