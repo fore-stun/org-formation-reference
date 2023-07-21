@@ -4,3 +4,6 @@ node_modules/
 .printed-stacks/
 .vscode/launch.json
 initial-commit.zip
+
+Session.vim
+result*
