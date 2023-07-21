@@ -45,10 +45,10 @@ CloudTrail:
   DependsOn: [OrganizationBuild]
   Path: ./templates/060-cloud-trail/_tasks.yml
 
-GuardDuty:
-  Type: include
-  DependsOn: [OrganizationBuild, Types]
-  Path: ./templates/070-guard-duty/_tasks.yml
+# GuardDuty:
+#  Type: include
+#  DependsOn: [OrganizationBuild, Types]
+#  Path: ./templates/070-guard-duty/_tasks.yml
 
 AwsConfigInventory:
   Type: include
