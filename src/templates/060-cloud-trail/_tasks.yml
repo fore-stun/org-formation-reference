@@ -1,18 +1,18 @@
 Parameters:
-  <<: !Include '../../_parameters.yml'
+  <<: !Include "../../_parameters.yml"
 
 CloudTrail:
   Type: update-stacks
   Template: ./cloud-trail.yml
-  StackName: !Sub '${resourcePrefix}-cloudtrail'
+  StackName: !Sub "${resourcePrefix}-cloudtrail"
   StackDescription: CloudTrail
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
-    Account: '*'
+    Account: "*"
     IncludeMasterAccount: true
   OrganizationBindings:
     LogArchiveBinding:
       Account: !Ref LogArchiveAccount
   TerminationProtection: true
   Parameters:
-    bucketName: !Sub '${resourcePrefix}-cloudtrail-${CurrentAccount.AccountId}'
+    bucketName: !Sub "${resourcePrefix}-cloudtrail-${CurrentAccount.AccountId}"

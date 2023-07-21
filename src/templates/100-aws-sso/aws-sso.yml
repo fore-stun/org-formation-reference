@@ -1,7 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Parameters:
-
   instanceArn:
     Type: String
 
@@ -10,7 +9,7 @@ Parameters:
 
   permissionSetArn:
     Type: String
-    Default: ''
+    Default: ""
 
   permissionSetName:
     Type: String
@@ -26,21 +25,19 @@ Parameters:
 
   masterAccountId:
     Type: String
-    Default: ''
+    Default: ""
 
 Conditions:
-
-  includePermissionSet: !Equals [ '', !Ref permissionSetArn ]
-  includeMaster: !Not [ !Equals [ '', !Ref masterAccountId ] ]
+  includePermissionSet: !Equals ["", !Ref permissionSetArn]
+  includeMaster: !Not [!Equals ["", !Ref masterAccountId]]
 
 Resources:
-
   PermissionSet:
     Type: AWS::SSO::PermissionSet
     Condition: includePermissionSet
     Properties:
       Name: !Ref permissionSetName
-      Description: !Sub '${permissionSetName} access to AWS organization'
+      Description: !Sub "${permissionSetName} access to AWS organization"
       InstanceArn: !Ref instanceArn
       ManagedPolicies: !Ref managedPolicies
       SessionDuration: !Ref sessionDuration
@@ -50,7 +47,12 @@ Resources:
     Condition: includeMaster
     Properties:
       InstanceArn: !Ref instanceArn
-      PermissionSetArn: !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+      PermissionSetArn:
+        !If [
+          includePermissionSet,
+          !GetAtt PermissionSet.PermissionSetArn,
+          !Ref permissionSetArn,
+        ]
       PrincipalId: !Ref principalId
       PrincipalType: GROUP
       TargetType: AWS_ACCOUNT
@@ -61,7 +63,11 @@ Resources:
     Properties:
       InstanceArn: !Ref instanceArn
       PermissionSets:
-        - !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+        - !If [
+            includePermissionSet,
+            !GetAtt PermissionSet.PermissionSetArn,
+            !Ref permissionSetArn,
+          ]
       PrincipalId: !Ref principalId
       PrincipalType: GROUP
       Targets:
@@ -71,6 +77,11 @@ Resources:
 
 Outputs:
   PermissionSetArn:
-    Value: !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+    Value:
+      !If [
+        includePermissionSet,
+        !GetAtt PermissionSet.PermissionSetArn,
+        !Ref permissionSetArn,
+      ]
     Export:
       Name: !Sub ${AWS::StackName}-permission-set-arn

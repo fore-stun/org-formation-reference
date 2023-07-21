@@ -1,60 +1,60 @@
 Parameters:
-  <<: !Include '../../_parameters.yml'
+  <<: !Include "../../_parameters.yml"
 
   appName:
     Type: String
-    Default: 'sso'
+    Default: "sso"
 
   # AWS SSO instance ARN
   instanceArn:
     Type: String
-    Default: '{{sso-instance-arn}}'
+    Default: "{{sso-instance-arn}}"
 
   # Principal ID from Identity Provider's group used by administrators
   adminGroup:
     Type: String
-    Default: '{{sso-admin-group-id}}'
+    Default: "{{sso-admin-group-id}}"
 
   # Principal ID from Identity Provider's group used by auditors
   auditorGroup:
     Type: String
-    Default: '{{sso-auditor-group-id}}'
+    Default: "{{sso-auditor-group-id}}"
 
   # Principal ID from Identity Provider's group used by developers
   developerGroup:
     Type: String
-    Default: '{{sso-developer-group-id}}'
+    Default: "{{sso-developer-group-id}}"
 
   # Principal ID from Identity Provider's group used by supporters
   supporterGroup:
     Type: String
-    Default: '{{sso-supporter-group-id}}'
+    Default: "{{sso-supporter-group-id}}"
 
 SsoAdministrator:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-admin'
-  StackDescription: 'Full permission role used by Admin group within whole organization'
+  StackName: !Sub "${resourcePrefix}-${appName}-admin"
+  StackDescription: "Full permission role used by Admin group within whole organization"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
     IncludeMasterAccount: true
   OrganizationBindings:
     TargetBinding:
-      Account: '*'
+      Account: "*"
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref adminGroup
-    permissionSetName: 'Administrator'
-    managedPolicies: [ 'arn:aws:iam::aws:policy/AdministratorAccess' ]
-    sessionDuration: 'PT1H'
+    permissionSetName: "Administrator"
+    managedPolicies: ["arn:aws:iam::aws:policy/AdministratorAccess"]
+    sessionDuration: "PT1H"
     masterAccountId: !Ref ManagementAccount
 
 SsoAdministratorSupporter:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-admin-supporter'
-  StackDescription: 'Full permission role used by Supporter group within Production organizational units'
+  StackName: !Sub "${resourcePrefix}-${appName}-admin-supporter"
+  StackDescription: "Full permission role used by Supporter group within Production organizational units"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
@@ -67,13 +67,14 @@ SsoAdministratorSupporter:
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup
-    permissionSetArn: !CopyValue [ !Sub '${resourcePrefix}-${appName}-admin-permission-set-arn' ]
+    permissionSetArn:
+      !CopyValue [!Sub "${resourcePrefix}-${appName}-admin-permission-set-arn"]
 
 SsoWriter:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-writer'
-  StackDescription: 'Read and Write role used by Supporter group within Production organizational units'
+  StackName: !Sub "${resourcePrefix}-${appName}-writer"
+  StackDescription: "Read and Write role used by Supporter group within Production organizational units"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
@@ -86,15 +87,15 @@ SsoWriter:
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup
-    permissionSetName: 'Writer'
-    managedPolicies: [ 'arn:aws:iam::aws:policy/PowerUserAccess' ]
-    sessionDuration: 'PT1H'
+    permissionSetName: "Writer"
+    managedPolicies: ["arn:aws:iam::aws:policy/PowerUserAccess"]
+    sessionDuration: "PT1H"
 
 SsoDeveloper:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-developer'
-  StackDescription: 'Read and Write role used by Developer group within SDLC organizational units'
+  StackName: !Sub "${resourcePrefix}-${appName}-developer"
+  StackDescription: "Read and Write role used by Developer group within SDLC organizational units"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
@@ -106,34 +107,34 @@ SsoDeveloper:
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref developerGroup
-    permissionSetName: 'Developer'
-    managedPolicies: [ 'arn:aws:iam::aws:policy/PowerUserAccess' ]
-    sessionDuration: 'PT12H'
+    permissionSetName: "Developer"
+    managedPolicies: ["arn:aws:iam::aws:policy/PowerUserAccess"]
+    sessionDuration: "PT12H"
 
 SsoAuditor:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-auditor'
-  StackDescription: 'Audit role used by Auditor group within whole organization'
+  StackName: !Sub "${resourcePrefix}-${appName}-auditor"
+  StackDescription: "Audit role used by Auditor group within whole organization"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
     IncludeMasterAccount: true
   OrganizationBindings:
     TargetBinding:
-      Account: '*'
+      Account: "*"
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref auditorGroup
-    permissionSetName: 'Auditor'
-    managedPolicies: [ 'arn:aws:iam::aws:policy/SecurityAudit' ]
-    sessionDuration: 'PT1H'
+    permissionSetName: "Auditor"
+    managedPolicies: ["arn:aws:iam::aws:policy/SecurityAudit"]
+    sessionDuration: "PT1H"
 
 SsoViewer:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-viewer'
-  StackDescription: 'Read-only role used by Admin group within whole organization'
+  StackName: !Sub "${resourcePrefix}-${appName}-viewer"
+  StackDescription: "Read-only role used by Admin group within whole organization"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
@@ -147,16 +148,16 @@ SsoViewer:
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref adminGroup
-    permissionSetName: 'Viewer'
-    managedPolicies: [ 'arn:aws:iam::aws:policy/job-function/ViewOnlyAccess' ]
-    sessionDuration: 'PT12H'
+    permissionSetName: "Viewer"
+    managedPolicies: ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"]
+    sessionDuration: "PT12H"
     masterAccountId: !Ref ManagementAccount
 
 SsoViewerSupporter:
   Type: update-stacks
   Template: ./aws-sso.yml
-  StackName: !Sub '${resourcePrefix}-${appName}-viewer-supporter'
-  StackDescription: 'Read-only role used by Supporter group within Production organizational units'
+  StackName: !Sub "${resourcePrefix}-${appName}-viewer-supporter"
+  StackDescription: "Read-only role used by Supporter group within Production organizational units"
   TerminationProtection: false
   DefaultOrganizationBindingRegion: !Ref primaryRegion
   DefaultOrganizationBinding:
@@ -169,4 +170,5 @@ SsoViewerSupporter:
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup
-    permissionSetArn: !CopyValue [ !Sub '${resourcePrefix}-${appName}-viewer-permission-set-arn' ]
+    permissionSetArn:
+      !CopyValue [!Sub "${resourcePrefix}-${appName}-viewer-permission-set-arn"]

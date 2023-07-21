@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   stateBucketName:
@@ -53,13 +53,13 @@ Resources:
         Statement:
           - Sid: AccessFromOwnerAccount
             Principal:
-              AWS: !Ref 'AWS::AccountId'
+              AWS: !Ref "AWS::AccountId"
             Effect: Allow
             Action:
               - s3:*
             Resource:
-              - !Sub '${StateBucket.Arn}'
-              - !Sub '${StateBucket.Arn}/*'
+              - !Sub "${StateBucket.Arn}"
+              - !Sub "${StateBucket.Arn}/*"
           - Sid: AccessFromAnotherAccount
             Principal:
               AWS: !Ref allowedAccountId
@@ -67,19 +67,19 @@ Resources:
             Action:
               - s3:*
             Resource:
-              - !Sub '${StateBucket.Arn}'
-              - !Sub '${StateBucket.Arn}/*'
+              - !Sub "${StateBucket.Arn}"
+              - !Sub "${StateBucket.Arn}/*"
           - Sid: AccessFromOrg
             Principal:
-              AWS: '*'
+              AWS: "*"
             Effect: Allow
             Action:
               - s3:GetObject
             Resource:
-              - !Sub '${StateBucket.Arn}/*'
+              - !Sub "${StateBucket.Arn}/*"
             Condition:
               StringEquals:
-                'aws:PrincipalOrgID':
+                "aws:PrincipalOrgID":
                   - !Ref organizationPrincipalId
 
   BuildArtifactsBucketPolicy:
@@ -87,16 +87,16 @@ Resources:
     Properties:
       Bucket: !Ref BuildArtifactsBucket
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-          - Sid: 'AccessFromOwnerAccount'
-            Effect: 'Allow'
+          - Sid: "AccessFromOwnerAccount"
+            Effect: "Allow"
             Principal:
               AWS: !Ref AWS::AccountId
-            Action: 's3:*'
+            Action: "s3:*"
             Resource:
-              - !Sub '${BuildArtifactsBucket.Arn}'
-              - !Sub '${BuildArtifactsBucket.Arn}/*'
+              - !Sub "${BuildArtifactsBucket.Arn}"
+              - !Sub "${BuildArtifactsBucket.Arn}/*"
           - Sid: AccessFromAnotherAccount
             Principal:
               AWS: !Ref allowedAccountId
@@ -104,17 +104,17 @@ Resources:
             Action:
               - s3:*
             Resource:
-              - !Sub '${BuildArtifactsBucket.Arn}'
-              - !Sub '${BuildArtifactsBucket.Arn}/*'
-          - Sid: 'OrgAllowGetObject'
-            Effect: 'Allow'
-            Principal: '*'
+              - !Sub "${BuildArtifactsBucket.Arn}"
+              - !Sub "${BuildArtifactsBucket.Arn}/*"
+          - Sid: "OrgAllowGetObject"
+            Effect: "Allow"
+            Principal: "*"
             Action:
-              - 's3:GetObject'
-              - 's3:GetObjectVersion'
+              - "s3:GetObject"
+              - "s3:GetObjectVersion"
             Resource:
-              - !Sub '${BuildArtifactsBucket.Arn}/*'
+              - !Sub "${BuildArtifactsBucket.Arn}/*"
             Condition:
               StringEquals:
-                'aws:PrincipalOrgID':
+                "aws:PrincipalOrgID":
                   - !Ref organizationPrincipalId

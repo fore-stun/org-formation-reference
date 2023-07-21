@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Parameters:
   bucketName:
@@ -44,7 +44,7 @@ Resources:
             Principal:
               Service: cloudtrail.amazonaws.com
             Action: s3:PutObject
-            Resource: !Sub '${CloudTrailBucket.Arn}/AWSLogs/*'
+            Resource: !Sub "${CloudTrailBucket.Arn}/AWSLogs/*"
             Condition:
               StringEquals:
                 s3:x-amz-acl: bucket-owner-full-control
@@ -58,5 +58,5 @@ Resources:
       IncludeGlobalServiceEvents: true
       IsMultiRegionTrail: true
       EnableLogFileValidation: true
-      CloudWatchLogsLogGroupArn: ''
-      CloudWatchLogsRoleArn: ''
+      CloudWatchLogsLogGroupArn: ""
+      CloudWatchLogsRoleArn: ""

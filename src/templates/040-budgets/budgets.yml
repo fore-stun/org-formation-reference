@@ -1,29 +1,26 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-
   budgetName:
     Type: String
 
   emailAddress:
     Type: String
-    Default: ''
+    Default: ""
 
   budgetAmount:
     Type: Number
     Default: 50
 
 Conditions:
-
-  hasSubscription: !Not [ !Equals [ '', !Ref emailAddress ] ]
+  hasSubscription: !Not [!Equals ["", !Ref emailAddress]]
 
 Resources:
-
   NotificationTopic:
     Type: AWS::SNS::Topic
     Properties:
       DisplayName: Budgets Notification
-      TopicName: !Sub '${budgetName}-topic'
+      TopicName: !Sub "${budgetName}-topic"
 
   EmailSubscription:
     Type: AWS::SNS::Subscription
@@ -39,7 +36,7 @@ Resources:
       Topics:
         - !Ref NotificationTopic
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: AllowBudgetsPublish
             Effect: Allow

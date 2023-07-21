@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   resourcePrefix:
@@ -11,21 +11,20 @@ Parameters:
     Type: String
 
 Resources:
-
   TrustedIpSet:
     Type: AWS::GuardDuty::IPSet
     Properties:
-      Name: !Sub '${resourcePrefix}-guardduty-trusted-ips'
+      Name: !Sub "${resourcePrefix}-guardduty-trusted-ips"
       Activate: true
       DetectorId: !Ref detectorId
       Format: TXT
-      Location: !Sub 's3://${bucketName}/trusted_ips.txt'
+      Location: !Sub "s3://${bucketName}/trusted_ips.txt"
 
   NotificationTopic:
     Type: AWS::SNS::Topic
     Properties:
       DisplayName: AWS Org GuardDuty Notification
-      TopicName: !Sub '${resourcePrefix}-guardduty-notification'
+      TopicName: !Sub "${resourcePrefix}-guardduty-notification"
 
   NotificationTopicPolicy:
     Type: AWS::SNS::TopicPolicy
@@ -33,7 +32,7 @@ Resources:
       Topics:
         - !Ref NotificationTopic
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: AllowEventsPublish
             Effect: Allow
@@ -46,7 +45,7 @@ Resources:
     Type: AWS::Events::Rule
     DependsOn: NotificationTopicPolicy
     Properties:
-      Name: !Sub '${resourcePrefix}-guardduty-finding-rule'
+      Name: !Sub "${resourcePrefix}-guardduty-finding-rule"
       EventPattern:
         source:
           - aws.guardduty
@@ -61,4 +60,4 @@ Outputs:
   NotificationTopic:
     Value: !Ref NotificationTopic
     Export:
-      Name: !Sub '${AWS::StackName}-notification-topic'
+      Name: !Sub "${AWS::StackName}-notification-topic"

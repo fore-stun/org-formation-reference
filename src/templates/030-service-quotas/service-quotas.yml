@@ -1,7 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Resources:
-
   S3BucketsQuota:
     OrganizationBinding:
       AccountsWithTag: service-quotas-s3-buckets
