@@ -62,8 +62,8 @@ SsoAdministratorSupporter:
   OrganizationBindings:
     TargetBinding:
       OrganizationalUnit:
-        - !Ref SharedOu
-        - !Ref ProdOu
+        - !Ref InfrastructureOU
+        - !Ref WorkloadOU
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup
@@ -82,8 +82,8 @@ SsoWriter:
   OrganizationBindings:
     TargetBinding:
       OrganizationalUnit:
-        - !Ref SharedOu
-        - !Ref ProdOu
+        - !Ref InfrastructureOU
+        - !Ref WorkloadOU
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup
@@ -103,7 +103,7 @@ SsoDeveloper:
   OrganizationBindings:
     TargetBinding:
       OrganizationalUnit:
-        - !Ref SdlcOu
+        - !Ref DeploymentOU
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref developerGroup
@@ -142,9 +142,9 @@ SsoViewer:
   OrganizationBindings:
     TargetBinding:
       OrganizationalUnit:
-        - !Ref SharedOu
-        - !Ref SdlcOu
-        - !Ref ProdOu
+        - !Ref InfrastructureOU
+        - !Ref DeploymentOU
+        - !Ref WorkloadOU
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref adminGroup
@@ -165,8 +165,8 @@ SsoViewerSupporter:
   OrganizationBindings:
     TargetBinding:
       OrganizationalUnit:
-        - !Ref SharedOu
-        - !Ref ProdOu
+        - !Ref InfrastructureOU
+        - !Ref WorkloadOU
   Parameters:
     instanceArn: !Ref instanceArn
     principalId: !Ref supporterGroup

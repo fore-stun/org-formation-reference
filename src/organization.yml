@@ -20,45 +20,35 @@ Organization:
       DefaultOrganizationAccessRoleName: OrganizationAccountAccessRole
       DefaultBuildAccessRoleName: OrganizationFormationBuildAccessRole
 
-  # Organizational Unit used for Production workloads
-  ProdOu:
+  # Production services
+  WorkloadOU:
     Type: OC::ORG::OrganizationalUnit
     Properties:
-      OrganizationalUnitName: prod
+      OrganizationalUnitName: workload
       Accounts: []
 
-  # Organizational Unit used for the Software Development Life Cycle of each team
-  SdlcOu:
+  # Organizational Unit used for shared networking
+  InfrastructureOU:
     Type: OC::ORG::OrganizationalUnit
     Properties:
-      OrganizationalUnitName: sdlc
+      OrganizationalUnitName: infrastructure
       Accounts: []
 
-  # Organizational Unit used for shared infrastructure services
-  SharedOu:
+  # Organizational Unit used for the Software Development Life Cycle or CI/CD
+  DeploymentOU:
     Type: OC::ORG::OrganizationalUnit
     Properties:
-      OrganizationalUnitName: shared
+      OrganizationalUnitName: deployment
+      Accounts: []
+
+  # Organizational Unit used for security accounts
+  SecurityOU:
+    Type: OC::ORG::OrganizationalUnit
+    Properties:
+      OrganizationalUnitName: security
       Accounts:
         - !Ref OrgBuildAccount
         - !Ref LogArchiveAccount
-
-  # Organizational Unit that contains accounts to be deleted from organization
-  SuspendedOu:
-    Type: OC::ORG::OrganizationalUnit
-    Properties:
-      OrganizationalUnitName: suspended
-      Accounts: []
-
-  LogArchiveAccount:
-    Type: OC::ORG::Account
-    Properties:
-      Alias: "{{organization-name}}-log-archive"
-      AccountName: Log Archive Account
-      RootEmail: aws+log-archive@{{email-domain}}
-      Tags:
-        budget-alarm-threshold: 200
-        budget-alarm-threshold-email-recipient: log-archive@{{email-domain}}
 
   OrgBuildAccount:
     Type: OC::ORG::Account
@@ -67,5 +57,22 @@ Organization:
       AccountName: Organization Build Account
       RootEmail: aws+org-build@{{email-domain}}
       Tags:
-        budget-alarm-threshold: 200
+        budget-alarm-threshold: 50
         budget-alarm-threshold-email-recipient: me@{{email-domain}}
+
+  LogArchiveAccount:
+    Type: OC::ORG::Account
+    Properties:
+      Alias: "{{organization-name}}-log-archive"
+      AccountName: Log Archive Account
+      RootEmail: aws+log-archive@{{email-domain}}
+      Tags:
+        budget-alarm-threshold: 50
+        budget-alarm-threshold-email-recipient: log-archive@{{email-domain}}
+
+  # Organizational Unit that contains accounts to be deleted from organization
+  SuspendedOU:
+    Type: OC::ORG::OrganizationalUnit
+    Properties:
+      OrganizationalUnitName: suspended
+      Accounts: []
