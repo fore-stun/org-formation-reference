@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09-OC"
+
+Parameters:
+  resourcePrefix:
+    Type: String
+
+  assumeAccount:
+    Type: String
+
+  roleName:
+    Type: String
+
+  rolePolicyArns:
+    Type: CommaDelimitedList
+
+# Section contains a named set of Bindings.
+# Bindings determine what resources are deployed where
+# These bindings can be !Ref'd from the Resources in the resource section
+OrganizationBindings:
+  AssumeRoleBinding:
+    Account: !Ref assumeAccount
+
+  RoleBinding:
+    Account: "*"
+    ExcludeAccount:
+      - !Ref assumeAccount
+
+Resources:
+  Role:
+    OrganizationBinding: !Ref RoleBinding
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns: !Ref rolePolicyArns
+      RoleName: !Ref roleName
+      # This is the trust policy
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+              - sts:TagSession
+              - sts:SetSourceIdentity
+            Principal:
+              AWS: Fn::EnumTargetAccounts AssumeRoleBinding '${account}' # role can only be assumed from SharedServicesAccount
+
+  AssumeRolePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    OrganizationBinding: !Ref AssumeRoleBinding
+    Properties:
+      ManagedPolicyName: !Sub "${resourcePrefix}-${roleName}-assume-role-policy"
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - sts:AssumeRole
+              - sts:TagSession
+              - sts:SetSourceIdentity
+            Resource: Fn::EnumTargetAccounts RoleBinding 'arn:aws:iam::${account}:role/${roleName}'

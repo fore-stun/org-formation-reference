@@ -59,3 +59,8 @@ AwsSso:
   Type: include
   DependsOn: [OrganizationBuild, Types, SeviceControlPolicies]
   Path: ./templates/100-aws-sso/_tasks.yml
+
+IAM:
+  Type: include
+  DependsOn: [OrganizationBuild]
+  Path: ./templates/300-iam/_tasks.yml
