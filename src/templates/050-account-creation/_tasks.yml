@@ -11,7 +11,7 @@ AccountCreationEvent:
   Parameters:
     organizationPrincipalId: !Ref organizationPrincipalId
     resourcePrefix: !Ref resourcePrefix
-    emailAddress: ""
+    emailAddress: !GetAtt CurrentAccount.Tags.new-account-email-recipient
 
     # if you put an email address in here, you will receive an email for every newly created account.
     # this is just an example to get you started with further automating the account creation process.
