@@ -50,10 +50,10 @@ CloudTrail:
 #  DependsOn: [OrganizationBuild, Types]
 #  Path: ./templates/070-guard-duty/_tasks.yml
 
-AwsConfigInventory:
-  Type: include
-  DependsOn: [OrganizationBuild]
-  Path: ./templates/080-aws-config-inventory/_tasks.yml
+# AwsConfigInventory:
+#   Type: include
+#   DependsOn: [OrganizationBuild]
+#   Path: ./templates/080-aws-config-inventory/_tasks.yml
 
 AwsSso:
   Type: include
