@@ -1,0 +1,17 @@
+Parameters:
+  <<: !Include "../organization-parameters.yml"
+
+  appName:
+    Type: String
+    Default: "s3"
+
+S3Buckets:
+  Type: update-stacks
+  Template: ./bucket.yml
+  StackName: !Sub "${resourcePrefix}-${appName}-buckets"
+  StackDescription: "S3 buckets"
+  DefaultOrganizationBindingRegion: !Ref primaryRegion
+  DefaultOrganizationBinding:
+    Account: !Ref accountId
+  TerminationProtection: false
+  Parameters: {}

@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: "2010-09-09-OC"
+
+Parameters: {}
+
+Resources: {}
+#  S3Storefront:
+#    Type: AWS::S3::Bucket
+#    OrganizationBinding:
+#      Account: !Ref CICDAccount
+#    Properties:
+#      BucketName: ""
+#      Tags:
+#        - Key: Name
+#          Value: ""

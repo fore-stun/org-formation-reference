@@ -1,0 +1,22 @@
+Parameters:
+  <<: !Include "../organization-parameters.yml"
+
+  appName:
+    Type: String
+    Default: "iam"
+
+Terraform:
+  Type: update-stacks
+  Template: ./terraform.yml
+  StackName: !Sub "${resourcePrefix}-${appName}-admin"
+  StackDescription: "Role used by Terraform within whole organization"
+  TerminationProtection: false
+  DefaultOrganizationBindingRegion: !Ref primaryRegion
+  OrganizationBindings:
+    TargetBinding:
+      Account: "*"
+  Parameters:
+    resourcePrefix: !Ref resourcePrefix
+    assumeAccount: !Ref SharedServicesAccount
+    roleName: "terraform"
+    rolePolicyArns: ["arn:aws:iam::aws:policy/AdministratorAccess"]

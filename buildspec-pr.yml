@@ -1,13 +1,18 @@
 version: 0.2
+env:
+  variables:
+    PNPM_HOME: "~/.local/pnpm"
 phases:
   install:
+    runtime-versions:
+      nodejs: 16.x
     commands:
-      - npm ci
-      - echo installed dependencies
-      - npx org-formation -v
-      - pip install cfn-lint
+      - npm install --silent -g pnpm@8.6.0
+      - pnpm install --frozen-lockfile --prod
+      - export PATH="$PWD/node_modules/.bin:$PATH"
+      - org-formation -v
   build:
     commands:
-      - npm run print-tasks -- --no-color
-      - npm run validate-tasks -- --no-color
-      - npm run cfn-lint
+      - org-formation print-tasks -- --no-color
+      - org-formation validate-tasks -- --no-color
+      - pnpm run cfn-lint

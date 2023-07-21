@@ -1,17 +1,17 @@
 Parameters:
   <<: !Include "../../_parameters.yml"
 
-PasswordPolicy:
-  Type: update-stacks
-  Template: ./password-policy.yml
-  StackName: !Sub "${resourcePrefix}-password-policy"
-  MaxConcurrentStacks: 10
-  Parameters:
-    minimumPasswordLength: 24
-  DefaultOrganizationBinding:
-    IncludeMasterAccount: true
-    Account: "*"
-    Region: !Ref primaryRegion
+# PasswordPolicy:
+#   Type: update-stacks
+#   Template: ./password-policy.yml
+#   StackName: !Sub "${resourcePrefix}-password-policy"
+#   MaxConcurrentStacks: 10
+#   Parameters:
+#     minimumPasswordLength: 24
+#   DefaultOrganizationBinding:
+#     IncludeMasterAccount: true
+#     Account: "*"
+#     Region: !Ref primaryRegion
 
 SecureDefaults:
   Type: update-stacks

@@ -1,13 +1,19 @@
 version: 0.2
+env:
+  variables:
+    PNPM_HOME: "~/.local/pnpm"
 phases:
   install:
+    runtime-versions:
+      nodejs: 16.x
     commands:
-      - npm ci
-      - echo installed dependencies
-      - npx org-formation -v
+      - npm install --silent -g pnpm@8.6.0
+      - pnpm install --frozen-lockfile --prod
+      - export PATH="$PWD/node_modules/.bin:$PATH"
+      - org-formation -v
   build:
     commands:
-      - npm run perform-tasks -- --no-color
+      - org-formation perform-tasks -- --no-color
   post_build:
     commands:
       - echo Build completed

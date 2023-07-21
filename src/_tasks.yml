@@ -45,17 +45,27 @@ CloudTrail:
   DependsOn: [OrganizationBuild]
   Path: ./templates/060-cloud-trail/_tasks.yml
 
-GuardDuty:
-  Type: include
-  DependsOn: [OrganizationBuild, Types]
-  Path: ./templates/070-guard-duty/_tasks.yml
+# GuardDuty:
+#  Type: include
+#  DependsOn: [OrganizationBuild, Types]
+#  Path: ./templates/070-guard-duty/_tasks.yml
 
-AwsConfigInventory:
-  Type: include
-  DependsOn: [OrganizationBuild]
-  Path: ./templates/080-aws-config-inventory/_tasks.yml
+# AwsConfigInventory:
+#   Type: include
+#   DependsOn: [OrganizationBuild]
+#   Path: ./templates/080-aws-config-inventory/_tasks.yml
 
 AwsSso:
   Type: include
   DependsOn: [OrganizationBuild, Types, SeviceControlPolicies]
   Path: ./templates/100-aws-sso/_tasks.yml
+
+IAM:
+  Type: include
+  DependsOn: [OrganizationBuild]
+  Path: ./templates/300-iam/_tasks.yml
+
+S3Buckets:
+  Type: include
+  DependsOn: [IAM, AwsSso]
+  Path: ./templates/700-s3/_tasks.yml
