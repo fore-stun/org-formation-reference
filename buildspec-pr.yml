@@ -11,8 +11,9 @@ phases:
       - pnpm install --frozen-lockfile --prod
       - export PATH="$PWD/node_modules/.bin:$PATH"
       - org-formation -v
+      - pip install cfn-lint
   build:
     commands:
-      - org-formation print-tasks -- --no-color
-      - org-formation validate-tasks -- --no-color
+      - pnpm run print-tasks
+      - pnpm run validate-tasks
       - pnpm run cfn-lint
