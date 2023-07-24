@@ -1,5 +1,5 @@
 Parameters:
-  <<: !Include "../organization-parameters.yml"
+  <<: !Include "../../_parameters.yml"
 
   appName:
     Type: String
