@@ -13,7 +13,7 @@ phases:
       - org-formation -v
   build:
     commands:
-      - org-formation perform-tasks -- --no-color
+      - pnpm run perform-tasks
   post_build:
     commands:
       - echo Build completed
