@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   resourcePrefix:
@@ -38,10 +38,10 @@ Resources:
               Service: guardduty.amazonaws.com
             Action:
               - s3:GetObject
-            Resource: !Sub '${TrustedIpsBucket.Arn}/trusted_ips.txt'
+            Resource: !Sub "${TrustedIpsBucket.Arn}/trusted_ips.txt"
 
 Outputs:
   BucketName:
     Value: !Ref TrustedIpsBucket
     Export:
-      Name: !Sub '${AWS::StackName}-name'
+      Name: !Sub "${AWS::StackName}-name"

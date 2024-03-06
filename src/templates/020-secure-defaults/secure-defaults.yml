@@ -1,7 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Resources:
-
   S3AccountPublicAccessBlock:
     Type: "Community::S3::PublicAccessBlock"
     Properties:

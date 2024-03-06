@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   resourcePrefix:
@@ -6,14 +6,14 @@ Parameters:
 
   bucketName:
     Type: String
-    Description: 'Name of the central S3 bucket containing AWS Config audit findings'
+    Description: "Name of the central S3 bucket containing AWS Config audit findings"
 
 Resources:
   ConfigAuditBucket:
     OrganizationBinding: !Ref LogArchiveBinding
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
-    Type: 'AWS::S3::Bucket'
+    Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref bucketName
       AccessControl: BucketOwnerFullControl
@@ -33,7 +33,7 @@ Resources:
     Properties:
       Bucket: !Ref ConfigAuditBucket
       PolicyDocument: # Taken from https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-policy.html#granting-access-in-another-account
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: AWSConfigBucketPermissionsCheck
             Effect: Allow
@@ -55,13 +55,13 @@ Resources:
               Service:
                 - config.amazonaws.com
             Action: s3:PutObject
-            Resource: !Sub '${ConfigAuditBucket.Arn}/*'
+            Resource: !Sub "${ConfigAuditBucket.Arn}/*"
             Condition:
               StringEquals:
-                's3:x-amz-acl': 'bucket-owner-full-control'
+                "s3:x-amz-acl": "bucket-owner-full-control"
 
   ConfigurationRecorder:
-    Type: 'AWS::Config::ConfigurationRecorder'
+    Type: "AWS::Config::ConfigurationRecorder"
     Properties:
       RecordingGroup:
         AllSupported: true
@@ -69,36 +69,36 @@ Resources:
       RoleARN: !GetAtt ConfigurationRecorderRole.Arn
 
   DeliveryChannel:
-    Type: 'AWS::Config::DeliveryChannel'
+    Type: "AWS::Config::DeliveryChannel"
     Properties:
       ConfigSnapshotDeliveryProperties:
         DeliveryFrequency: One_Hour
       S3BucketName: !Ref ConfigAuditBucket
 
   ConfigurationRecorderRole:
-    Type: 'AWS::IAM::Role'
+    Type: "AWS::IAM::Role"
     Properties:
       ManagedPolicyArns:
-      - 'arn:aws:iam::aws:policy/service-role/AWS_ConfigRole'
+        - "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
-        - Sid: AssumeRole1
-          Effect: Allow
-          Principal:
-            Service: 'config.amazonaws.com'
-          Action: 'sts:AssumeRole'
+          - Sid: AssumeRole1
+            Effect: Allow
+            Principal:
+              Service: "config.amazonaws.com"
+            Action: "sts:AssumeRole"
       Policies:
-      - PolicyName: 's3-policy'
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Effect: Allow
-            Action: 's3:PutObject'
-            Resource: !Sub '${ConfigAuditBucket.Arn}/*'
-            Condition:
-              StringLike:
-                's3:x-amz-acl': 'bucket-owner-full-control'
-          - Effect: Allow
-            Action: 's3:GetBucketAcl'
-            Resource: !GetAtt ConfigAuditBucket.Arn
+        - PolicyName: "s3-policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "s3:PutObject"
+                Resource: !Sub "${ConfigAuditBucket.Arn}/*"
+                Condition:
+                  StringLike:
+                    "s3:x-amz-acl": "bucket-owner-full-control"
+              - Effect: Allow
+                Action: "s3:GetBucketAcl"
+                Resource: !GetAtt ConfigAuditBucket.Arn

@@ -1,12 +1,10 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-
   targetId:
     Type: String
 
 Resources:
-
   AccessAnalyzerServiceAccess:
     Type: Community::Organizations::EnableAWSServiceAccess
     Properties:

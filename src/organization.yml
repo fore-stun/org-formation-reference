@@ -1,19 +1,18 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 Description: Default organization blueprint
 
 # https://aws.amazon.com/blogs/mt/best-practices-for-organizational-units-with-aws-organizations/
 Organization:
-
   ManagementAccount:
     Type: OC::ORG::MasterAccount
     Properties:
-      Alias: '{{organization-name}}-management'
-      RootEmail: '{{management-root-email-address}}'
+      Alias: "{{organization-name}}-management"
+      RootEmail: "{{management-root-email-address}}"
       AccountName: Management Account
-      AccountId: '{{management-account-id}}'
+      AccountId: "{{management-account-id}}"
       Tags:
         budget-alarm-threshold: 200
-        budget-alarm-threshold-email-recipient: '{{budget-alarm-email-address}}'
+        budget-alarm-threshold-email-recipient: "{{budget-alarm-email-address}}"
 
   OrganizationRoot:
     Type: OC::ORG::OrganizationRoot
@@ -55,21 +54,21 @@ Organization:
   SecurityAccount:
     Type: OC::ORG::Account
     Properties:
-      Alias: '{{organization-name}}-security'
+      Alias: "{{organization-name}}-security"
       AccountName: Security Account
-      RootEmail: '{{security-root-email-address}}'
+      RootEmail: "{{security-root-email-address}}"
 
   LogArchiveAccount:
     Type: OC::ORG::Account
     Properties:
-      Alias: '{{organization-name}}-log-archive'
+      Alias: "{{organization-name}}-log-archive"
       AccountName: Log Archive Account
-      RootEmail: '{{log-archive-root-email-address}}'
+      RootEmail: "{{log-archive-root-email-address}}"
 
   OrgBuildAccount:
     Type: OC::ORG::Account
     Properties:
-      Alias: '{{organization-name}}-org-build'
+      Alias: "{{organization-name}}-org-build"
       AccountName: Organization Build Account
       RootEmail: aws+org-build@{{email-domain}}
       Tags:

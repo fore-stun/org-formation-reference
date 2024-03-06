@@ -9,8 +9,8 @@ Parameters:
   allRegions:
     Type: String
     Default:
-    - us-east-1
-    - eu-central-1
+      - us-east-1
+      - eu-central-1
 
 EbsEncryptionDefaultsRP:
   Type: register-type
@@ -18,7 +18,7 @@ EbsEncryptionDefaultsRP:
   ResourceType: "Community::Organizations::EbsEncryptionDefaults"
   OrganizationBinding:
     IncludeMasterAccount: true
-    Account: '*'
+    Account: "*"
     Region: !Ref allRegions # Ebs Encryption Defaults need to be set in all regions.
 
 S3PublicAccessBlockRP:
@@ -27,7 +27,7 @@ S3PublicAccessBlockRP:
   ResourceType: "Community::S3::PublicAccessBlock"
   OrganizationBinding:
     IncludeMasterAccount: true
-    Account: '*'
+    Account: "*"
     Region: !Ref allRegions # Ebs Encryption Defaults need to be set in all regions.
 
 NoDefaultVpcRP:

@@ -1,7 +1,6 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Parameters:
-
   instanceArn:
     Type: String
 
@@ -10,7 +9,7 @@ Parameters:
 
   permissionSetArn:
     Type: String
-    Default: ''
+    Default: ""
 
   permissionSetName:
     Type: String
@@ -18,13 +17,13 @@ Parameters:
 
   managedPolicies:
     Type: CommaDelimitedList
-    Default: ''
-    Description: 'A list of AWS managed policy ARNs for a SSO permission set'
+    Default: ""
+    Description: "A list of AWS managed policy ARNs for a SSO permission set"
 
   inlinePolicy:
     Type: String
-    Default: ''
-    Description: 'An AWS policy document for a SSO permission set'
+    Default: ""
+    Description: "An AWS policy document for a SSO permission set"
 
   sessionDuration:
     Type: String
@@ -32,36 +31,41 @@ Parameters:
 
   masterAccountId:
     Type: String
-    Default: ''
+    Default: ""
 
 Conditions:
-
-  includePermissionSet: !Equals [ '', !Ref permissionSetArn ]
-  includeMaster: !Not [ !Equals [ '', !Ref masterAccountId ] ]
-  includeInlinePolicy: !Not [ !Equals [ '', !Ref inlinePolicy ] ]
+  includePermissionSet: !Equals ["", !Ref permissionSetArn]
+  includeMaster: !Not [!Equals ["", !Ref masterAccountId]]
+  includeInlinePolicy: !Not [!Equals ["", !Ref inlinePolicy]]
   includeManagedPolicies: !Not
     - !Equals
-      - !Join ['', !Ref managedPolicies]
+      - !Join ["", !Ref managedPolicies]
 
 Resources:
-
   PermissionSet:
     Type: AWS::SSO::PermissionSet
     Condition: includePermissionSet
     Properties:
       Name: !Ref permissionSetName
-      Description: !Sub '${permissionSetName} access to AWS organization'
+      Description: !Sub "${permissionSetName} access to AWS organization"
       InstanceArn: !Ref instanceArn
-      ManagedPolicies: !If [ includeManagedPolicies, !Ref managedPolicies, !Ref 'AWS::NoValue' ]
+      ManagedPolicies:
+        !If [includeManagedPolicies, !Ref managedPolicies, !Ref "AWS::NoValue"]
       SessionDuration: !Ref sessionDuration
-      InlinePolicy: !If [ includeInlinePolicy, !Ref inlinePolicy, !Ref 'AWS::NoValue' ]
+      InlinePolicy:
+        !If [includeInlinePolicy, !Ref inlinePolicy, !Ref "AWS::NoValue"]
 
   AssignmentMaster:
     Type: AWS::SSO::Assignment
     Condition: includeMaster
     Properties:
       InstanceArn: !Ref instanceArn
-      PermissionSetArn: !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+      PermissionSetArn:
+        !If [
+          includePermissionSet,
+          !GetAtt PermissionSet.PermissionSetArn,
+          !Ref permissionSetArn,
+        ]
       PrincipalId: !Ref principalId
       PrincipalType: GROUP
       TargetType: AWS_ACCOUNT
@@ -72,7 +76,11 @@ Resources:
     Properties:
       InstanceArn: !Ref instanceArn
       PermissionSets:
-        - !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+        - !If [
+            includePermissionSet,
+            !GetAtt PermissionSet.PermissionSetArn,
+            !Ref permissionSetArn,
+          ]
       PrincipalId: !Ref principalId
       PrincipalType: GROUP
       Targets:
@@ -82,6 +90,11 @@ Resources:
 
 Outputs:
   PermissionSetArn:
-    Value: !If [ includePermissionSet, !GetAtt PermissionSet.PermissionSetArn, !Ref permissionSetArn ]
+    Value:
+      !If [
+        includePermissionSet,
+        !GetAtt PermissionSet.PermissionSetArn,
+        !Ref permissionSetArn,
+      ]
     Export:
       Name: !Sub ${AWS::StackName}-permission-set-arn

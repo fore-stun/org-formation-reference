@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   organizationPrincipalId:
@@ -10,20 +10,18 @@ Parameters:
 
   emailAddress:
     Type: String
-    Default: ''
+    Default: ""
 
 Conditions:
-
-  hasSubscription: !Not [ !Equals [ '', !Ref emailAddress ] ]
+  hasSubscription: !Not [!Equals ["", !Ref emailAddress]]
 
 Resources:
-
   NotificationTopic:
     Type: AWS::SNS::Topic
     Condition: hasSubscription
     Properties:
       DisplayName: Account Creation Notification
-      TopicName: !Sub '${resourcePrefix}-account-creation-notification'
+      TopicName: !Sub "${resourcePrefix}-account-creation-notification"
 
   EmailSubscription:
     Type: AWS::SNS::Subscription
@@ -40,7 +38,7 @@ Resources:
       Topics:
         - !Ref NotificationTopic
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: AllowEventsPublish
             Effect: Allow
@@ -52,7 +50,7 @@ Resources:
             Effect: Allow
             Action: sns:Subscribe
             Resource: !Ref NotificationTopic
-            Principal: '*'
+            Principal: "*"
             Condition:
               StringEquals:
                 aws:PrincipalOrgID: !Ref organizationPrincipalId
@@ -61,7 +59,7 @@ Resources:
     Type: AWS::Events::Rule
     Condition: hasSubscription
     Properties:
-      Name: !Sub '${resourcePrefix}-account-creation-rule'
+      Name: !Sub "${resourcePrefix}-account-creation-rule"
       Description: Rule used to forward events from OrgFormation
       State: ENABLED
       EventPattern:
@@ -80,4 +78,4 @@ Outputs:
     Condition: hasSubscription
     Value: !Ref NotificationTopic
     Export:
-      Name: !Sub '${AWS::StackName}-notification-topic'
+      Name: !Sub "${AWS::StackName}-notification-topic"

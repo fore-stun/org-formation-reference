@@ -1,25 +1,23 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-
   roleName:
     Type: String
-    Default: 'OrganizationFormationBuildAccessRole'
+    Default: "OrganizationFormationBuildAccessRole"
 
   assumeRolePrincipals:
     Type: CommaDelimitedList
-    Default: ''
+    Default: ""
 
 Conditions:
-
-  hasPrincipal: !Not [ !Equals [ '', !Join [ '', !Ref assumeRolePrincipals ] ] ]
+  hasPrincipal: !Not [!Equals ["", !Join ["", !Ref assumeRolePrincipals]]]
 
 Resources:
   OrganizationFormationBuildAccessRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Ref roleName
-      Description: 'IAM Role used for cross account access by OrgFormation build process'
+      Description: "IAM Role used for cross account access by OrgFormation build process"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess # see: https://github.com/org-formation/org-formation-cli/blob/master/docs/least-priviledge.md
       AssumeRolePolicyDocument:
@@ -28,7 +26,12 @@ Resources:
           - Effect: Allow
             Action: sts:AssumeRole
             Principal:
-              AWS: !If [ hasPrincipal, !Ref assumeRolePrincipals, !Sub 'arn:aws:iam::${AWS::AccountId}:root' ]
+              AWS:
+                !If [
+                  hasPrincipal,
+                  !Ref assumeRolePrincipals,
+                  !Sub "arn:aws:iam::${AWS::AccountId}:root",
+                ]
 
 Outputs:
   RoleArn:

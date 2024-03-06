@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09-OC'
+AWSTemplateFormatVersion: "2010-09-09-OC"
 
 Parameters:
   resourcePrefix:
@@ -9,14 +9,13 @@ Parameters:
     Description: The identifier from the account used to manage GuardDuty
 
 Resources:
-
   GuardDutyBucket:
     Type: AWS::S3::Bucket
     OrganizationBinding: !Ref LogArchiveBinding
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      BucketName: !Sub '${resourcePrefix}-guardduty-finding'
+      BucketName: !Sub "${resourcePrefix}-guardduty-finding"
       AccessControl: Private
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
@@ -34,7 +33,7 @@ Resources:
     Properties:
       Bucket: !Ref GuardDutyBucket
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: GuardDutyWrite
             Effect: Allow
@@ -44,7 +43,7 @@ Resources:
               - s3:PutObject
               - s3:GetBucketLocation
             Resource:
-              - !Sub 'arn:aws:s3:::${GuardDutyBucket}/*'
+              - !Sub "arn:aws:s3:::${GuardDutyBucket}/*"
               - !GetAtt GuardDutyBucket.Arn
 
   Detector:
@@ -63,8 +62,7 @@ Resources:
 
   Member:
     Type: AWS::GuardDuty::Member
-    ForeachAccount:
-      !Ref MemberBinding
+    ForeachAccount: !Ref MemberBinding
     Properties:
       DetectorId: !Ref Detector
       Email: !GetAtt CurrentAccount.RootEmail
@@ -76,4 +74,4 @@ Outputs:
   DetectorId:
     Value: !Ref Detector
     Export:
-      Name: !Sub '${AWS::StackName}-detector-id'
+      Name: !Sub "${AWS::StackName}-detector-id"
