@@ -13,3 +13,6 @@ ea5f6a73ee017ef9968f92c489e25b20fa086cad
 
 # Run prettier on yml files
 1bdef88c6976ebc38450855e4c7ad3ca6ffc5ccb
+
+# Autoformat text using simple-markdown -mG
+27044f0891326cc17183f53b3d219d062592ef84
