@@ -45,7 +45,7 @@ To create an AWS Organization based on this reference architecture, managed by o
 
 1.  A valid credit card
 2.  A working phone number
-3.  Four unique email addresses within your domain (management-root, compliance-root and orgbuild-root)
+3.  Four unique email addresses within your domain (management-root, compliance-root, log-archive-root and orgbuild-root)
 
 > *Hint: if you are using Google as an email provider, you can use team+something@domain.com to create unique addresses that all arrive in the same email box*
 
@@ -113,33 +113,37 @@ Clone this repository locally
 2.
 Search and replace the following values globally in all files
 
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| Parameter                         | Description                                                        | Source                                                                    | Example                                         |
-+===================================+====================================================================+===========================================================================+=================================================+
-| {{management-account-id}}         | 12 digit identifier of the management account                      | [Create the AWS Management Account](#1-create-the-aws-management-account) | 341696816352                                    |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{state-bucket-name}}             | S3 bucket where the IaC state will be stored                       | choose                                                                    | organization-formation-state-341696816352-prd   |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{organization-name}}             | Alias of the management account                                    | choose                                                                    | bee-awesome                                     |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{primary-aws-region}}            | The primary AWS region to deploy to                                | choose                                                                    | us-east-1                                       |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{management-root-email-address}} | Email address used to register the management account              | [Create the AWS Management Account](#1-create-the-aws-management-account) | platform.team@bee.awesome                       |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{compliance-root-email-address}} | Email address for the compliance account                           | [Prerequisites](#prerequisites)                                           | platform.team+compliance@bee.awesome            |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{orgbuild-root-email-address}}   | Email address for the org build account                            | [Prerequisites](#prerequisites)                                           | platform.team+org-build@bee.awesome             |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{sso-instance-arn}}              | AWS SSO instance ARN                                               | [Configure AWS SSO](#3-configure-aws-sso)                                 | arn:aws:sso:::instance/ssoins-6987b39db64e1ecd  |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{sso-admin-group-id}}            | Principal ID from Identity Provider’s group used by administrators | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{sso-auditor-group-id}}          | Principal ID from Identity Provider’s group used by auditors       | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{sso-developer-group-id}}        | Principal ID from Identity Provider’s group used by auditors       | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
-| {{sso-supporter-group-id}}        | Principal ID from Identity Provider’s group used by supporters     | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
-+-----------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| Parameter                          | Description                                                        | Source                                                                    | Example                                         |
++====================================+====================================================================+===========================================================================+=================================================+
+| {{management-account-id}}          | 12 digit identifier of the management account                      | [Create the AWS Management Account](#1-create-the-aws-management-account) | 341696816352                                    |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{state-bucket-name}}              | S3 bucket where the IaC state will be stored                       | choose                                                                    | organization-formation-state-341696816352-prd   |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{organization-name}}              | Alias of the management account                                    | choose                                                                    | bee-awesome                                     |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{primary-aws-region}}             | The primary AWS region to deploy to                                | choose                                                                    | us-east-1                                       |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{management-root-email-address}}  | Email address used to register the management account              | [Create the AWS Management Account](#1-create-the-aws-management-account) | platform.team@bee.awesome                       |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{security-root-email-address}}    | Email address for the security account                             | [Prerequisites](#prerequisites)                                           | platform.team+security@bee.awesome              |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{log-archive-root-email-address}} | Email address for the log-archive account                          | [Prerequisites](#prerequisites)                                           | platform.team+logarchive@bee.awesome            |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{budget-alarm-email-address}}     | Email address to receive budget alarms                             | [Prerequisites](#prerequisites)                                           | platform.team+budget@bee.awesome                |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{orgbuild-root-email-address}}    | Email address for the org build account                            | [Prerequisites](#prerequisites)                                           | platform.team+org-build@bee.awesome             |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{sso-instance-arn}}               | AWS SSO instance ARN                                               | [Configure AWS SSO](#3-configure-aws-sso)                                 | arn:aws:sso:::instance/ssoins-6987b39db64e1ecd  |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{sso-admin-group-id}}             | Principal ID from Identity Provider’s group used by administrators | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{sso-auditor-group-id}}           | Principal ID from Identity Provider’s group used by auditors       | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{sso-developer-group-id}}         | Principal ID from Identity Provider’s group used by auditors       | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
+| {{sso-supporter-group-id}}         | Principal ID from Identity Provider’s group used by supporters     | [Configure AWS SSO](#3-configure-aws-sso)                                 | 99672ac0cf-8495fd69-c57e-4214-88a4-b9f41eed0d32 |
++------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
 
 ## 5. Initialize `org-formation`
 
@@ -175,7 +179,7 @@ This is the only time you will use the root user of any account for any purpose 
 3.  Create the role that the `org-formation` uses inside of the Management Account
 
     ``` bash
-    aws cloudformation create-stack --stack-name org-formation-role --template-body file://src/templates/000-org-build/org-formation-role.yml
+    aws cloudformation create-stack --stack-name org-formation-role --template-body file://src/templates/000-org-build/role.yml --capabilities CAPABILITY_NAMED_IAM
     ```
 
 4.  Zip this local repository into `000-org-build` to be used as the initial commit for the OrgBuild CodeCommit repository.
