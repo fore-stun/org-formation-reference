@@ -7,12 +7,12 @@ Organization:
     Type: OC::ORG::MasterAccount
     Properties:
       Alias: "{{organization-name}}-management"
-      RootEmail: aws+management@{{email-domain}}
+      RootEmail: "{{management-root-email-address}}"
       AccountName: Management Account
       AccountId: "{{management-account-id}}"
       Tags:
         budget-alarm-threshold: 200
-        budget-alarm-threshold-email-recipient: me@{{email-domain}}
+        budget-alarm-threshold-email-recipient: "{{budget-alarm-email-address}}"
 
   OrganizationRoot:
     Type: OC::ORG::OrganizationRoot
@@ -55,7 +55,7 @@ Organization:
     Properties:
       Alias: "{{organization-name}}-org-build"
       AccountName: Organization Build Account
-      RootEmail: aws+org-build@{{email-domain}}
+      RootEmail: "{{org-build-root-email-address}}"
       Tags:
         budget-alarm-threshold: 50
         budget-alarm-threshold-email-recipient: me@{{email-domain}}
@@ -65,13 +65,13 @@ Organization:
     Properties:
       Alias: "{{organization-name}}-log-archive"
       AccountName: Log Archive Account
-      RootEmail: aws+log-archive@{{email-domain}}
+      RootEmail: "{{log-archive-root-email-address}}"
       Tags:
         budget-alarm-threshold: 50
-        budget-alarm-threshold-email-recipient: log-archive@{{email-domain}}
+        budget-alarm-threshold-email-recipient: "{{budget-alarm-email-address}}"
 
   # Organizational Unit that contains accounts to be deleted from organization
-  SuspendedOU:
+  SuspendedOu:
     Type: OC::ORG::OrganizationalUnit
     Properties:
       OrganizationalUnitName: suspended

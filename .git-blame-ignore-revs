@@ -13,3 +13,21 @@ ea5f6a73ee017ef9968f92c489e25b20fa086cad
 
 # Autoformat text using simple-markdown -mG
 332905433f15a5927b06c01d1aa0dfc94d126d64
+
+# Reformat with yaml fixer and manual md
+8d1d112d2724769c7fafce3ddd38330b34ff9071
+
+# Reformat readme
+ea5f6a73ee017ef9968f92c489e25b20fa086cad
+
+# Revert "Reformat readme"
+2b13408308de1fe337bf7cb8f1318ba139ed6fdf
+
+# Run manual changes to README
+99e1d9d102945929bb256fbe7a82721710d45cb8
+
+# Run prettier on yml files
+1bdef88c6976ebc38450855e4c7ad3ca6ffc5ccb
+
+# Autoformat text using simple-markdown -mG
+27044f0891326cc17183f53b3d219d062592ef84
