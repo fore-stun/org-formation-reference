@@ -7,6 +7,7 @@ the following template keys must be replaced
 * {{log-archive-root-email-address}}
 * {{org-build-root-email-address}}
 * {{budget-alarm-email-address}}
+* {{new-account-alarm-email-address}}
 * {{build-account-id}}
 * {{state-bucket-name}}
 * {{primary-aws-region}}

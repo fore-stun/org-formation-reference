@@ -13,6 +13,7 @@ Organization:
       Tags:
         budget-alarm-threshold: 200
         budget-alarm-threshold-email-recipient: "{{budget-alarm-email-address}}"
+        new-account-email-recipient: "{{new-account-alarm-email-address}}"
 
   OrganizationRoot:
     Type: OC::ORG::OrganizationRoot
@@ -58,7 +59,8 @@ Organization:
       RootEmail: "{{org-build-root-email-address}}"
       Tags:
         budget-alarm-threshold: 50
-        budget-alarm-threshold-email-recipient: me@{{email-domain}}
+        budget-alarm-threshold-email-recipient: "{{budget-alarm-email-address}}"
+        new-account-email-recipient: "{{new-account-alarm-email-address}}"
 
   LogArchiveAccount:
     Type: OC::ORG::Account
