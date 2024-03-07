@@ -3,19 +3,22 @@
 This reference architecture and also the steps outlined in this review are still under development and wont work as-is.
 
 Please do
- - watch this project if you would like to get updates on the process.
- - contribute best practices / ideas / documentation / code through issues or PRs <3
+
+- watch this project if you would like to get updates on the process.
+- contribute best practices / ideas / documentation / code through issues or PRs <3
 
 thanks!
 
 # Introduction
 This is a reference architecture to get started quickly with using `org-formation` as well as provide examples of best practices and demonstrates the capabilities. The reference architecture is built with the following core principles:
+
 * _Batteries included:_ it should deploy with as little dependencies as possible
 * _Always relevant:_ every organization will get value out of every part of the reference architecture. This means two things
-  * it should not contain services that might not be used. Examples: **AWS ECS**, **AWS Step Functions**
-  * it should not be too opinionated about choosing an AWS service as the implementation for a function that can also be sourced externally. Examples: **AWS SecurityHub**, **AWS CloudWatch** logs and metrics
+    * it should not contain services that might not be used. Examples: **AWS ECS**, **AWS Step Functions**
+    * it should not be too opinionated about choosing an AWS service as the implementation for a function that can also be sourced externally. Examples: **AWS SecurityHub**, **AWS CloudWatch** logs and metrics
 
 To use this reference architecture, follow the [Getting Started](#getting-started). If you want to deploy additional stacks using org-formation on top of this reference architecture, then it is advised to do that using _delegated builds_. Within the org-formation GitHub there will be example stacks configured as delegated builds that are usable, but are not eligeble to be part of the reference architecture because they either depend on an external system (not batteries included) or not always relevent (uses an AWS service that does something that is not always relevant). Examples are:
+
 * Break glass notifications based on events
 * DNS and Domain management
 
@@ -103,40 +106,44 @@ In this step, you run OrgFormation locally using the credentials of the root use
 
 > _Note: you might need to run the OrgFormation commands more than once._
 
-<br>
+1.  Install OrgFormation on your local machine
 
-1. Install OrgFormation on your local machine
-```
-npm install -g aws-organization-formation
-```
-<details>
-<summary>I already have an existing AWS Organization</summary>
+    ```bash
+    npm install -g aws-organization-formation
+    ```
 
-If you already have an existing organization, then the following command generates an organization.yml file for you based on the current structure of your organization.
+    I already have an existing AWS Organization
+    :   If you already have an existing organization, then the following command generates an organization.yml file for you based on the current structure of your organization.
 
-```
-npx org-formation init organization.yml --region _Primary Region_ --cross-account-role-name OrganizationFormationBuildAccessRole --print-stack --verbose
-```
+        ```bash
+        npx org-formation init organization.yml --region _Primary Region_ --cross-account-role-name OrganizationFormationBuildAccessRole --print-stack --verbose
+        ```
 
-You can then merge that with the ./src/organization.yml file in the way you like and continue with this guide.
-</details><br>
+        You can then merge that with the ./src/organization.yml file in the way you like and continue with this guide.
 
-2. Apply the organization.yml file to AWS Organizations. This means creating accounts and OUs and ordering them. This will also create the OrgBuild account where the org-formation build pipeline will reside.
-```
-npx org-formation update ./src/organization.yml --verbose
-```
-3. Create the role that the `org-formation` uses inside of the Management Account
-```
-aws cloudformation create-stack --stack-name org-formation-role --template-body file://src/templates/000-org-build/org-formation-role.yml
-```
-4. Zip this local repository into `000-org-build` to be used as the initial commit for the OrgBuild CodeCommit repository. From the top level of this repository, execute:
-```
-zip ./src/templates/000-org-build/initial-commit src/**/*.* .gitignore .org-formationrc *.yml *.json README.md
-```
-5. Deploy the stacks in `000-org-build`. This creates the build roles, state bucket and file and the OrgFormation build pipeline in the OrgBuild account. It also uploads this entire local repository as an initial commit to the Git repository that the build pipeline will then execute.
-```
-npx org-formation perform-tasks ./src/templates/000-org-build/_tasks.yml --organization-file ./src/organization.yml --max-concurrent-stacks 50 --max-concurrent-tasks 1 --print-stack --verbose
-```
+2.  Apply the organization.yml file to AWS Organizations. This means creating accounts and OUs and ordering them. This will also create the OrgBuild account where the org-formation build pipeline will reside.
+
+    ```bash
+    npx org-formation update ./src/organization.yml --verbose
+    ```
+
+3.  Create the role that the `org-formation` uses inside of the Management Account
+
+    ```bash
+    aws cloudformation create-stack --stack-name org-formation-role --template-body file://src/templates/000-org-build/org-formation-role.yml
+    ```
+
+4.  Zip this local repository into `000-org-build` to be used as the initial commit for the OrgBuild CodeCommit repository. From the top level of this repository, execute:
+
+    ```bash
+    zip ./src/templates/000-org-build/initial-commit src/**/*.* .gitignore .org-formationrc *.yml *.json README.md
+    ```
+
+5.  Deploy the stacks in `000-org-build`. This creates the build roles, state bucket and file and the OrgFormation build pipeline in the OrgBuild account. It also uploads this entire local repository as an initial commit to the Git repository that the build pipeline will then execute.
+
+    ```bash
+    npx org-formation perform-tasks ./src/templates/000-org-build/_tasks.yml --organization-file ./src/organization.yml --max-concurrent-stacks 50 --max-concurrent-tasks 1 --print-stack --verbose
+    ```
 
 When you have finished the setup, we will need to delete the S3 bucket containing the state in the management account. This was created in step 2 because at that time the OrgBuild account, was assumed to not exist yet.
 
