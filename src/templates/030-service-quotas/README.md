@@ -7,17 +7,26 @@ All of the resources here are based on community resource types that are made av
 
 Some notable resources in this folder:
 
-| Quota/Limit           | Description                                                                                                                                                           |
-|------------------------------------|------------------------------------|
-| S3 buckets            | Set the maximum number of S3 buckets the account may contain. This service quota is global (across all regions), the default maximum is 100.                          |
-| CloudFormation stacks | Set the maximum number of CloudFormation stacks allowed. This service quota is regional (needs to be set separately for every region). The default per region is 200. |
-| DynamoDB tables       | Set the maximum number of DynamoDB tables allowed. This service quota is regional (needs to be set separately for every region). The default per region is 256.       |
++-----------------------------------+--------------------------------------------------------------------------------+
+| Quota/Limit                       | Description                                                                    |
++===================================+================================================================================+
+| S3 buckets                        | Set the maximum number of S3 buckets the account may contain.                  |
+|                                   | This service quota is global (across all regions), the default maximum is 100. |
++-----------------------------------+--------------------------------------------------------------------------------+
+| CloudFormation stacks             | Set the maximum number of CloudFormation stacks allowed.                       |
+|                                   | This service quota is regional (needs to be set separately for every region).  |
+|                                   | The default per region is 200.                                                 |
++-----------------------------------+--------------------------------------------------------------------------------+
+| DynamoDB tables                   | Set the maximum number of DynamoDB tables allowed.                             |
+|                                   | This service quota is regional (needs to be set separately for every region).  |
+|                                   | The default per region is 256.                                                 |
++-----------------------------------+--------------------------------------------------------------------------------+
 
-Note that for regional limits, the account tags used in the service-quotas.yml template file apply to the `primaryRegion` set up in the  `_parameters.yml` file.
+Note that for regional limits, the account tags used in the service-quotas.yml template file apply to the `primaryRegion` set up in the `_parameters.yml` file.
 
 As an example, consider the following account:
 
-```  yaml
+``` yaml
 TempDevAccount:
     Type: OC::ORG::Account
     Properties:

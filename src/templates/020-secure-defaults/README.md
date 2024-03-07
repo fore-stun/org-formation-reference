@@ -6,8 +6,12 @@ This limits the financial or security impact of mistakes or helps prevent them a
 
 Some notable resources in this folder:
 
-| Resource        | Description                                                                               |
-|------------------------------------|------------------------------------|
-| Password Policy |                                                                                           |
-| Secure Defaults | Block public S3 buckets, enable default EBS encryption, opt out of AWS AI usage (privacy) |
-| Access Analyzer |                                                                                           |
++-----------------------------------+-------------------------------------------------------------------------------------------+
+| Resource                          | Description                                                                               |
++===================================+===========================================================================================+
+| Password Policy                   |                                                                                           |
++-----------------------------------+-------------------------------------------------------------------------------------------+
+| Secure Defaults                   | Block public S3 buckets, enable default EBS encryption, opt out of AWS AI usage (privacy) |
++-----------------------------------+-------------------------------------------------------------------------------------------+
+| Access Analyzer                   |                                                                                           |
++-----------------------------------+-------------------------------------------------------------------------------------------+
