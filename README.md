@@ -105,13 +105,12 @@ IAM Users including the root user should not be used as a security best practice
 
 Configuring AWS SSO manually using AWS SSO itself as an identity provider is the quickest and easiest way to get started (and is batteries included).
 At the time of writing AWS SSO does not support automating this via an API, as soon as it does, this guide will be updated accordingly.
-If you want to configure an external Identity Provider, then start [here](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html). \##
-4.
-Clone and modify this repository
-1.
-Clone this repository locally
-2.
-Search and replace the following values globally in all files
+If you want to configure an external Identity Provider, then start [here](https://docs.aws.amazon.com/singlesignon/latest/userguide/supported-idps.html).
+
+## 4. Clone and modify this repository
+
+1.  Clone this repository locally
+2.  Search and replace the following values globally in all files
 
 +------------------------------------+--------------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------+
 | Parameter                          | Description                                                        | Source                                                                    | Example                                         |
