@@ -49,6 +49,8 @@ To create an AWS Organization based on this reference architecture, managed by o
 
 > *Hint: if you are using Google as an email provider, you can use team+something@domain.com to create unique addresses that all arrive in the same email box*
 
+4.  An email address for budget emails (budget-alarm-email-address).
+
 ## 1. Create the AWS Management Account
 
 Create an AWS Account.
